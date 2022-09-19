@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Run the hook command.
+# Note: this will be replaced by the real command during copy.
+#
+
+FILE=$1
+MESSAGE=$(cat $FILE)
+TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '(CU-)[a-z0-9]{7}')
+if [[ $TICKET == "" || "$MESSAGE" == "$TICKET"* ]];then
+  exit 0;
+fi
+
+echo "$TICKET $MESSAGE" > $FILE
